@@ -3,12 +3,24 @@
  */
 package org;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
+public class App extends JFrame {
+    public App() {
+        setVisible(true);
+        setTitle("Sorting Visualization");
+        setPreferredSize(new Dimension(600, 500));
+        getContentPane().add(new canvas());
+        pack();
+    }
+
+    public String test_build() {
+        return "build is successful";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println(new App().test_build());
     }
 }
