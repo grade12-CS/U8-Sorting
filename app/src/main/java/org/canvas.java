@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import java.awt.Toolkit;
+
 public final class canvas extends JPanel {
     final int array[];
     final int visual_factor = 10; 
@@ -19,12 +21,12 @@ public final class canvas extends JPanel {
         max = 50;
         min = 10;
         arr_size = 200;
-        canvas_width = 1920; 
-        canvas_height = 1080;
+        canvas_width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        canvas_height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         array = generate_array(arr_size, max, min);
         setBackground(Color.BLACK);
         setSize(new Dimension(canvas_width, canvas_height));
-        var btn_sort = new JButton("Sort");
+        JButton btn_sort = new JButton("Sort");
         btn_sort.addActionListener((ActionEvent e) -> {
             boggo_sort(array);
         });
