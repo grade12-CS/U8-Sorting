@@ -5,6 +5,8 @@ package org;
 
 import javax.swing.JFrame;
 
+import main.java.org.SortingMethods;
+
 public class App extends JFrame {
     final canvas canvas = new canvas();
     
@@ -22,5 +24,7 @@ public class App extends JFrame {
 
     public static void main(String[] args) {
         System.out.println(new App().test_build());
+
+        SortingMethods.selectionSort(new int[]{2, 4, 5, 3, 2, 6, 3, 6, 1, 2});
     }
 }
