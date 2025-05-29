@@ -3,16 +3,16 @@
  */
 package org;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 public class App extends JFrame {
+    final canvas canvas = new canvas();
+    
     public App() {
         setVisible(true);
         setTitle("Sorting Visualization");
-        setPreferredSize(new Dimension(600, 500));
-        getContentPane().add(new canvas());
+        setMinimumSize(canvas.getSize());
+        add(canvas);
         pack();
     }
 
