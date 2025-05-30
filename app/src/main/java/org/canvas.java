@@ -3,73 +3,34 @@ package org;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.util.Random;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-import java.awt.Toolkit;
-
-public final class canvas extends JPanel {
+public class Canvas extends SortingMethods {
     final int array[];
     final int visual_factor = 10; 
-    final int min, max, arr_size, canvas_width, canvas_height;
+    final int min, max, arr_size;
 
-    public canvas() {
+    public Canvas() {
         max = 50;
         min = 10;
         arr_size = 200;
-        canvas_width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        canvas_height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        array = generate_array(arr_size, max, min);
+        array = generateArray(arr_size, max, min);
         setBackground(Color.BLACK);
-        setSize(new Dimension(canvas_width, canvas_height));
+        setPreferredSize(getScreenSize());
         JButton btn_sort = new JButton("Sort");
         btn_sort.addActionListener((ActionEvent e) -> {
-            boggo_sort(array);
+            insertionSort(array);
         });
         add(btn_sort);
     }
 
-    int[] generate_array(int size, int max, int min) {
-        int result[] = new int[size];
-        Random r = new Random();
-        for (int i = 0; i < size; ++i) {
-            int num = r.nextInt(max) + min;
-            result[i] = num;
-        }
-        return result;
-    }
-
-    boolean is_shuffled(int[] array) {
-        for (int i = 0; i < array.length; ++i) {
-            if (i < array.length + 1 && array[i] > array[i + 1]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //infinite time complexity in the worst case lol
-    void boggo_sort(int[] array) {
-        new Thread(() -> {
-            while (!is_shuffled(array)) {
-                for (int i = 0; i < array.length; ++i) {
-                    int r_index = (int) (Math.random() * i);
-                    int temp = array[i];
-                    array[i] = array[r_index];
-                    array[r_index] = temp;
-                    SwingUtilities.invokeLater(() -> repaint());
-                    try {
-                        Thread.sleep((long)1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+    private Dimension getScreenSize() {
+        int width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        int height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        return new Dimension(width, height);
     }
 
     @Override

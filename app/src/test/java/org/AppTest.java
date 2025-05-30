@@ -9,6 +9,6 @@ import org.junit.jupiter.api.Test;
 class AppTest {
     @Test void app_has_built() {
         App classUnderTest = new App();
-        assertNotNull(classUnderTest.test_build(), "app should show a build success message");
+        assertNotNull(classUnderTest.testBuild(), "app should show a build success message");
     }
 }
