@@ -30,7 +30,7 @@ public class Canvas extends SortingMethods {
     private Dimension getScreenSize() {
         int width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         int height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        return new Dimension(width, height);
+        return new Dimension(width - 50, height);
     }
 
     @Override
