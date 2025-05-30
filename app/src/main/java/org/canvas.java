@@ -1,36 +1,29 @@
 package org;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
+import org.MultiCanvas.sorting_type;
 
 public class Canvas extends SortingMethods {
     final int array[];
     final int visual_factor = 10; 
-    final int min, max, arr_size;
 
-    public Canvas() {
-        max = 50;
-        min = 10;
-        arr_size = 200;
-        array = generateArray(arr_size, max, min);
+    public final sorting_type type;
+
+    public Canvas(int[] array, sorting_type type) {
+        this.array = array.clone();
+        this.type = type;
         setBackground(Color.BLACK);
-        setPreferredSize(getScreenSize());
-        JButton btn_sort = new JButton("Sort");
-        btn_sort.addActionListener((ActionEvent e) -> {
-            insertionSort(array);
-        });
-        add(btn_sort);
     }
-
-    private Dimension getScreenSize() {
-        int width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        int height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        return new Dimension(width - 50, height);
+    
+    public void sort() {
+        if (null != type) switch (type) {
+            case boggo -> boggoSort(array);
+            case bubble -> bubbleSort(array);
+            case insertion -> insertionSort(array);
+            case selection -> selectionSort(array);
+        }
     }
 
     @Override
