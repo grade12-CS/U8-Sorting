@@ -38,9 +38,8 @@ public class SortingMethods extends JPanel {
 
     //infinite time complexity in the worst case lol
     protected void boggoSort(int[] array) {
-        int[] copy = array;
         new Thread(() -> {
-            while (!isShuffled(copy)) {
+            while (!isShuffled(array)) {
                 for (int i = 0; i < array.length; ++i) {
                     int r_index = (int) (Math.random() * i);
                     int temp = array[i];
