@@ -3,8 +3,10 @@ package org;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.function.Consumer;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.SortingMethods.sorting_type;
 
@@ -41,26 +43,25 @@ public class Canvas extends JPanel {
         }
 
         public void getTime(){
-            long startTime = System.nanoTime();
-            sort();
-            long endTime = System.nanoTime();
-            long duration = endTime - startTime;
-            timeDisplay.timeLabel.setTime(duration + " ns");
+            //TODO: take into consideration the time spent during a stop?? if we have time
+            Consumer<Long> onFinish = (duration) -> {
+                SwingUtilities.invokeLater(() -> {
+                    timeDisplay.timeLabel.setTime("Sorting finished in " + duration/100000.000 + " ms");
+                });
+            };
+
+            if (null != type) switch (type) {
+                case boggo -> boggoSort(array, onFinish);
+                case bubble -> bubbleSort(array, onFinish);
+                case insertion -> insertionSort(array, onFinish);
+                case selection -> selectionSort(array, onFinish);
+            }
         }
 
         public void setArray(int[] newArray) {
             System.arraycopy(newArray, 0, this.array, 0, this.array.length);
             repaint();
             timeDisplay.timeLabel.setTime("Array updated");
-        }
-        
-        public void sort() {
-            if (null != type) switch (type) {
-                case boggo -> boggoSort(array);
-                case bubble -> bubbleSort(array);
-                case insertion -> insertionSort(array);
-                case selection -> selectionSort(array);
-            }
         }
 
         @Override
