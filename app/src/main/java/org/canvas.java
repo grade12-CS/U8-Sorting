@@ -20,6 +20,10 @@ public class Canvas extends JPanel {
         add(timeDisplay, BorderLayout.EAST);
     }
 
+    public void setArray(int[] newArray) {
+        canvas.setArray(newArray);
+    }
+
     public void startSort() {
         canvas.sort();
     }
@@ -34,6 +38,11 @@ public class Canvas extends JPanel {
             this.array = array.clone();
             this.type = type;
             setBackground(Color.BLACK);
+        }
+
+        public void setArray(int[] newArray) {
+            System.arraycopy(newArray, 0, this.array, 0, this.array.length);
+            repaint();
         }
         
         public void sort() {

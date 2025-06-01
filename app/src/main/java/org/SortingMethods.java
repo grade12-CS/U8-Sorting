@@ -52,6 +52,9 @@ public class SortingMethods extends JPanel {
         new Thread(() -> {
             while (!isShuffled(array)) {
                 for (int i = 0; i < array.length; ++i) {
+                    if(MultiCanvas.stopRequested) {
+                        return;
+                    }
                     int r_index = (int) (Math.random() * i);
                     int temp = array[i];
                     array[i] = array[r_index];
@@ -68,6 +71,9 @@ public class SortingMethods extends JPanel {
             while(swapped == true){
                 swapped = false;
                 for(int i = 1; i < array.length; i++){
+                    if(MultiCanvas.stopRequested) {
+                        return;
+                    }
                     if(array[i-1]>array[i]){
                         int tempNum = array[i-1];
                         array[i-1] = array[i];
@@ -84,6 +90,9 @@ public class SortingMethods extends JPanel {
     protected void selectionSort(int[] array){
         new Thread(() -> {
             for(int i = 0; i < array.length - 1; i++){
+                if(MultiCanvas.stopRequested) {
+                    return;
+                }
                 int minIndex = i;
                 for(int j = i + 1; j < array.length; j++){
                     if(array[j] < array[minIndex]){
@@ -104,6 +113,9 @@ public class SortingMethods extends JPanel {
             for(int i = 0; i < array.length - 1; i++){
                 int j = i + 1;
                 while(j > 0 && array[j] < array[j - 1]){
+                    if(MultiCanvas.stopRequested) {
+                        return;
+                    }
                     int num = array[j - 1];
                     array[j - 1] = array[j];
                     array[j] = num;

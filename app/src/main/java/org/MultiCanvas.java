@@ -18,15 +18,18 @@ import org.SortingMethods.sorting_type;
 
 public class MultiCanvas extends JPanel {
     JRadioButton insertion, bubble, selection, boggo;
-    JButton btn_sort;
+    JButton btn_sort, btn_refresh, btn_stop;
     final int min, max, arr_size;
-    final int[] array;
+    int[] array;
     final Canvas[] canvases = new Canvas[4];
+    volatile static boolean stopRequested = false;
 
     public MultiCanvas() {
         max = 50;
         min = 10;
         arr_size = 200;
+        //TODO: make array size 50,000 if can do
+        //TODO: make graph capable of handling negative numbers
         array = generateArray(arr_size, max, min);
         setLayout(new BorderLayout());
         setPreferredSize(getScreenSize());
@@ -96,8 +99,22 @@ public class MultiCanvas extends JPanel {
         bubble = new JRadioButton(sorting_type.bubble.name);
         selection = new JRadioButton(sorting_type.selection.name);
         boggo = new JRadioButton(sorting_type.boggo.name);
+
+        btn_refresh = new JButton("Refresh");
+        btn_stop = new JButton("Stop");
         btn_sort = new JButton("Sort");
+
+        btn_refresh.addActionListener((ActionEvent e) -> {
+            array = generateArray(arr_size, max, min);
+            for (Canvas c : canvases) {
+                c.setArray(array);
+            }
+        });
+        btn_stop.addActionListener((ActionEvent e) -> {
+            stopRequested = true;
+        });
         btn_sort.addActionListener((ActionEvent e) -> {
+            stopRequested = false;
             for (Canvas c : canvases) {
                 if (c.isVisible()) {
                     c.startSort();
@@ -109,6 +126,8 @@ public class MultiCanvas extends JPanel {
         p.add(selection);
         p.add(boggo);
         p.add(btn_sort);
+        p.add(btn_stop);
+        p.add(btn_refresh);
         return p;
     }
 
