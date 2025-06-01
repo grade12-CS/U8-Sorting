@@ -17,6 +17,8 @@ public class SortingMethods extends JPanel {
         }
     };
 
+    protected boolean sorted = false;
+
     /**
      * repaint canvas given a duration of milli seconds.
      * sorting method must be called in a separate thread to display sorting in real time.
@@ -36,9 +38,9 @@ public class SortingMethods extends JPanel {
         }
     }
 
-    protected boolean isShuffled(int[] array) {
+    protected boolean isSorted(int[] array) {
         for (int i = 0; i < array.length; ++i) {
-            if (i < array.length + 1 && array[i] > array[i + 1]) {
+            if (i + 1 < array.length && array[i] > array[i + 1]) {
                 return false;
             }
         }
@@ -50,7 +52,7 @@ public class SortingMethods extends JPanel {
     //infinite time complexity in the worst case lol
     protected void boggoSort(int[] array) {
         new Thread(() -> {
-            while (!isShuffled(array)) {
+            while (!isSorted(array)) {
                 for (int i = 0; i < array.length; ++i) {
                     if(MultiCanvas.stopRequested) {
                         return;
@@ -62,6 +64,7 @@ public class SortingMethods extends JPanel {
                     refresh();
                 }
             }
+            sorted = true;
         }).start();
     }
 
@@ -83,6 +86,7 @@ public class SortingMethods extends JPanel {
                     }
                 }
             }
+            sorted = true;
         }).start();
         //printArray(array);
     }
@@ -104,6 +108,7 @@ public class SortingMethods extends JPanel {
                 array[i] = minValue;
                 refresh();
             }
+            sorted = true;
         }).start();
         //printArray(array);
     }
@@ -123,6 +128,7 @@ public class SortingMethods extends JPanel {
                     refresh();
                 }
             }
+            sorted = true;
         }).start();
         //printArray(array);
     }

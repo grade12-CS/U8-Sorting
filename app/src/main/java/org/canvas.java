@@ -3,6 +3,7 @@ package org;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
@@ -25,13 +26,13 @@ public class Canvas extends JPanel {
     }
 
     public void startSort() {
-        canvas.getTime();
+        timeDisplay.startMeasuring(TimeUnit.MILLISECONDS, () -> canvas.sorted);
+        canvas.sort();
     }
 
     public class SubCanvas extends SortingMethods {
         final int array[];
         final int visual_factor = 1;
-
         public final sorting_type type;
 
         public SubCanvas(int[] array, sorting_type type) {
@@ -40,22 +41,15 @@ public class Canvas extends JPanel {
             setBackground(Color.BLACK);
         }
 
-        public void getTime(){
-            long startTime = System.nanoTime();
-            sort();
-            long endTime = System.nanoTime();
-            long duration = endTime - startTime;
-            timeDisplay.timeLabel.setTime(duration + " ns");
-        }
-
         public void setArray(int[] newArray) {
             System.arraycopy(newArray, 0, this.array, 0, this.array.length);
+            timeDisplay.timeLabel.setText("Array updated");
             repaint();
-            timeDisplay.timeLabel.setTime("Array updated");
         }
         
         public void sort() {
-            if (null != type) switch (type) {
+            if (null == type) return;
+            switch (type) {
                 case boggo -> boggoSort(array);
                 case bubble -> bubbleSort(array);
                 case insertion -> insertionSort(array);

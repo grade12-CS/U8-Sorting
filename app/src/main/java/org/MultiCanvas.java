@@ -22,7 +22,7 @@ public class MultiCanvas extends JPanel {
     final int min, max, array_size;
     int[] array;
     final Canvas[] canvases = new Canvas[4];
-    volatile static boolean stopRequested = false;
+    volatile static boolean stopRequested = false, refreshRequested = false;
 
     private final double array_size_to_screen_ratio = 0.2604167; //ratio obtained from my laptop screen
 
@@ -107,6 +107,7 @@ public class MultiCanvas extends JPanel {
 
         btn_refresh.addActionListener((ActionEvent e) -> {
             stopRequested = true;
+            refreshRequested = true;
             array = generateArray(array_size, max, min);
             for (Canvas c : canvases) {
                 c.setArray(array);
@@ -117,6 +118,7 @@ public class MultiCanvas extends JPanel {
         });
         btn_sort.addActionListener((ActionEvent e) -> {
             stopRequested = false;
+            refreshRequested = false;
             for (Canvas c : canvases) {
                 if (c.isVisible()) {
                     c.startSort();
