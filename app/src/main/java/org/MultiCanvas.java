@@ -105,6 +105,7 @@ public class MultiCanvas extends JPanel {
         btn_sort = new JButton("Sort");
 
         btn_refresh.addActionListener((ActionEvent e) -> {
+            stopRequested = true;
             array = generateArray(arr_size, max, min);
             for (Canvas c : canvases) {
                 c.setArray(array);

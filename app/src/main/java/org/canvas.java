@@ -25,7 +25,7 @@ public class Canvas extends JPanel {
     }
 
     public void startSort() {
-        canvas.sort();
+        canvas.getTime();
     }
 
     public class SubCanvas extends SortingMethods {
@@ -40,9 +40,18 @@ public class Canvas extends JPanel {
             setBackground(Color.BLACK);
         }
 
+        public void getTime(){
+            long startTime = System.nanoTime();
+            sort();
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
+            timeDisplay.timeLabel.setTime(duration + " ns");
+        }
+
         public void setArray(int[] newArray) {
             System.arraycopy(newArray, 0, this.array, 0, this.array.length);
             repaint();
+            timeDisplay.timeLabel.setTime("Array updated");
         }
         
         public void sort() {

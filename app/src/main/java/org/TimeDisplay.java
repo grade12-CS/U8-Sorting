@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class TimeDisplay extends JPanel{
-    private final TimeLabel timeLabel;
+    public final TimeLabel timeLabel;
 
     public TimeDisplay(String algorithm_name) {
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
