@@ -4,6 +4,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class SortingMethods extends JPanel {
+    public enum sorting_type {
+        boggo("Boggo Sort"), 
+        insertion("Insertion Sort"), 
+        bubble("Bubble Sort"), 
+        selection("Selection Sort");
+        public final String name;
+        private sorting_type(String name) {
+            this.name = name;
+        }
+    };
+
     protected long updateDuration = 1; //redraws canvas every 1 milli second
 
     /**
