@@ -54,7 +54,7 @@ public class TimeDisplay extends JPanel{
             if (canceled) return;
             endTime = Instant.now();
             timer.cancel();
-            canceled = true;
+            canceled = false;
             running = false;
         }
 
