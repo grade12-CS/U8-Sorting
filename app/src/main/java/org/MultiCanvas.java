@@ -92,10 +92,10 @@ public class MultiCanvas extends JPanel {
         p.setSize(getScreenSize().width, (int) (getScreenSize().height * (1/8)));
         p.setBorder(BorderFactory.createLineBorder(Color.gray));
         p.setForeground(Color.white);
-        insertion = new JRadioButton("Insertion Sort");
-        bubble = new JRadioButton("Bubble Sort");
-        selection = new JRadioButton("Selection Sort");
-        boggo = new JRadioButton("Boggo Sort");
+        insertion = new JRadioButton(sorting_type.insertion.name);
+        bubble = new JRadioButton(sorting_type.bubble.name);
+        selection = new JRadioButton(sorting_type.selection.name);
+        boggo = new JRadioButton(sorting_type.boggo.name);
         btn_sort = new JButton("Sort");
         btn_sort.addActionListener((ActionEvent e) -> {
             for (Canvas c : canvases) {
