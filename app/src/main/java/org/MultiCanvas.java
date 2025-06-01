@@ -14,11 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-public class MultiCanvas extends JPanel {
-    public enum sorting_type {
-        boggo, insertion, bubble, selection
-    };
+import org.SortingMethods.sorting_type;
 
+public class MultiCanvas extends JPanel {
     JRadioButton insertion, bubble, selection, boggo;
     JButton btn_sort;
     final int min, max, arr_size;
@@ -102,7 +100,7 @@ public class MultiCanvas extends JPanel {
         btn_sort.addActionListener((ActionEvent e) -> {
             for (Canvas c : canvases) {
                 if (c.isVisible()) {
-                    c.sort();
+                    c.startSort();
                 }
             }
         });
