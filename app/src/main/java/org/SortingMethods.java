@@ -1,7 +1,5 @@
 package org;
 
-import java.util.Random;
-
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -19,16 +17,6 @@ public class SortingMethods extends JPanel {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    protected int[] generateArray(int size, int max, int min) {
-        int result[] = new int[size];
-        Random r = new Random();
-        for (int i = 0; i < size; ++i) {
-            int num = r.nextInt(max) + min;
-            result[i] = num;
-        }
-        return result;
     }
 
     protected void printArray(int[] array) {
@@ -79,7 +67,7 @@ public class SortingMethods extends JPanel {
                 }
             }
         }).start();
-        printArray(array);
+        //printArray(array);
     }
 
     protected void selectionSort(int[] array){
@@ -97,7 +85,7 @@ public class SortingMethods extends JPanel {
                 refresh();
             }
         }).start();
-        printArray(array);
+        //printArray(array);
     }
 
     protected void insertionSort(int[] array){
@@ -113,7 +101,7 @@ public class SortingMethods extends JPanel {
                 }
             }
         }).start();
-        printArray(array);
+        //printArray(array);
     }
 
 }

@@ -11,14 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class App extends JFrame {
-    final Canvas canvas = new Canvas();
+    final MultiCanvas panel = new MultiCanvas();
 
     final JPanel timePanel = new JPanel();
     final timeDisplay bubbleTime = new timeDisplay("Bubble Sort");
     final timeDisplay insertionTime = new timeDisplay("Insertion Sort");
     final timeDisplay selectionTime = new timeDisplay("Selection Sort");
     final GridBagConstraints gbc = new GridBagConstraints();
-    
+
     public App() {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +38,7 @@ public class App extends JFrame {
         timePanel.add(insertionTime, gbc);
         timePanel.add(selectionTime, gbc);
 
-        add(canvas);
+        add(panel);
         add(timePanel);
         
         pack();
