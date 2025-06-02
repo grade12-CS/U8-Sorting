@@ -149,7 +149,18 @@ public class SortingMethods extends JPanel {
         //printArray(array);
     }
 
-    public static void trueBubbleSort(int[] array){
+    protected void trueBoggoSort(int[] array){
+        while(!isShuffled(array)){
+            for(int i = 0; i < array.length; ++i){
+                int r_index = (int) (Math.random() * i);
+                int temp = array[i];
+                array[i] = array[r_index];
+                array[r_index] = temp;
+            }
+        }
+    }
+
+    protected void trueBubbleSort(int[] array){
         boolean swapped = true;
         while(swapped == true){
             swapped = false;
@@ -164,7 +175,7 @@ public class SortingMethods extends JPanel {
         }
     }
 
-    public static void trueSelectionSort(int[] array){
+    protected void trueSelectionSort(int[] array){
         for(int i = 0; i < array.length - 1; i++){
             int minIndex = i;
             for(int j = i + 1; j < array.length; j++){
@@ -178,7 +189,7 @@ public class SortingMethods extends JPanel {
         }
     }
 
-    public static void trueInsertionSort(int[] array){
+    protected void trueInsertionSort(int[] array){
         for(int i = 0; i < array.length - 1; i++){
             int j = i + 1;
             while(j > 0 && array[j] < array[j-1]){
@@ -190,11 +201,11 @@ public class SortingMethods extends JPanel {
         }
     }
 
-    public static long getElapsedTime(int[] array, sorting_type type) {
+    protected long getElapsedTime(int[] array, sorting_type type) {
         int[] arrayCopy = array.clone();
         long start = System.nanoTime();
         switch (type) {
-            case boggo -> trueBubbleSort(arrayCopy);
+            case boggo -> trueBoggoSort(arrayCopy);
             case bubble -> trueBubbleSort(arrayCopy);
             case insertion -> trueInsertionSort(arrayCopy);
             case selection -> trueSelectionSort(arrayCopy);

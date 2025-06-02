@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.util.function.Consumer;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.SortingMethods.sorting_type;
 
