@@ -19,18 +19,19 @@ import org.SortingMethods.sorting_type;
 public class MultiCanvas extends JPanel {
     JRadioButton insertion, bubble, selection, boggo;
     JButton btn_sort, btn_refresh, btn_stop;
-    final int min, max, arr_size;
+    final int min, max, array_size;
     int[] array;
     final Canvas[] canvases = new Canvas[4];
     volatile static boolean stopRequested = false;
 
+    private final double array_size_to_screen_ratio = 0.2604167; //ratio obtained from my laptop screen
+
     public MultiCanvas() {
         max = 200;
         min = -200;
-        arr_size = 500;
-        //TODO: make array size 50,000 if can do
-        //TODO: make graph capable of handling negative numbers
-        array = generateArray(arr_size, max, min);
+        array_size = (int) (getScreenSize().width * array_size_to_screen_ratio);
+        System.err.println(array_size);
+        array = generateArray(array_size, max, min);
         setLayout(new BorderLayout());
         setPreferredSize(getScreenSize());
         add(groupButton(), BorderLayout.PAGE_START);
@@ -106,7 +107,7 @@ public class MultiCanvas extends JPanel {
 
         btn_refresh.addActionListener((ActionEvent e) -> {
             stopRequested = true;
-            array = generateArray(arr_size, max, min);
+            array = generateArray(array_size, max, min);
             for (Canvas c : canvases) {
                 c.setArray(array);
             }
