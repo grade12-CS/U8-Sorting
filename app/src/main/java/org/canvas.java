@@ -30,7 +30,7 @@ public class Canvas extends JPanel {
 
     public class SubCanvas extends SortingMethods {
         final int array[];
-        final int visual_factor = 3; 
+        final int visual_factor = 1;
 
         public final sorting_type type;
 
@@ -67,18 +67,24 @@ public class Canvas extends JPanel {
         public void paint(Graphics g) {
             super.paint(g);
             int width = getWidth() / array.length; //make every bars have equal width relative to panel width
+            int base_line = getHeight() / 2;
+            g.setColor(Color.WHITE);
+            g.drawLine(0, base_line, getWidth(), base_line); 
+
             for (int i = 0; i < array.length; ++i) {
-                int r = array[i] * 5;
-                r = (r > 255) ? 255 : r;
-                g.setColor(new Color(r, 100, 0)); //change color for fun
-                int height = array[i] * visual_factor; //bar height reflects the value of each number in array 
                 /* for each bar
                 * x pos: i * width + 2, add 2 for tiny padding
                 * y pos: panel height - bar height --> ensures bars to be drawn at the bottom
                 * bar width: width - 2 -> 2 is for gap between bars
                 * bar height: value * visual factor
                 */
-                g.fillRect(i * width + 2, getHeight() - height, width - 2, height);
+                int num = array[i];
+                Color color = num > 0 ? Color.ORANGE : Color.CYAN;
+                g.setColor(color); //change color for fun
+                int height = Math.abs(num) * visual_factor; //bar height reflects the value of each number in array 
+                int xpos = i * width;
+                int ypos = num > 0 ? base_line - height : base_line;
+                g.fillRect(xpos, ypos, width - 2, height);
             }
         }
     }

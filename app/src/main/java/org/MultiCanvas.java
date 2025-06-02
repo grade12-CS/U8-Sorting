@@ -25,9 +25,9 @@ public class MultiCanvas extends JPanel {
     volatile static boolean stopRequested = false;
 
     public MultiCanvas() {
-        max = 50;
-        min = 10;
-        arr_size = 200;
+        max = 200;
+        min = -200;
+        arr_size = 500;
         //TODO: make array size 50,000 if can do
         //TODO: make graph capable of handling negative numbers
         array = generateArray(arr_size, max, min);
@@ -84,7 +84,7 @@ public class MultiCanvas extends JPanel {
         int result[] = new int[size];
         Random r = new Random();
         for (int i = 0; i < size; ++i) {
-            int num = r.nextInt(max) + min;
+            int num = r.nextInt(max - min + 1) + min;
             result[i] = num;
         }
         return result;
