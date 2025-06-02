@@ -2,6 +2,8 @@ package org;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Timer;
@@ -41,18 +43,22 @@ public class TimeDisplay extends JPanel{
                 }   
             }
             long t = sw.getElapsedTime(unit);
-            timeLabel.setText(String.valueOf(t) + " " + unit.name());
+            //TODO: display up to 3 decimal places
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.CEILING);
+            timeLabel.setText(df.format(t) + " " + unit.name());
         });
     }
 
     public class Stopwatch {
         private Instant startTime, endTime;
-        private boolean running = false;
+        private boolean running = false, canceled = false;
         private Timer timer = new Timer();
         private Runnable task;
         private final long delay = 0, period = 1; //runs task every 1 milli seconds, with 0 ms delay before start
 
         public void start(Runnable task) {
+            if (canceled) return;
             this.task = task;
             running = true;
             startTime = Instant.now();
@@ -60,31 +66,45 @@ public class TimeDisplay extends JPanel{
         }
 
         public void stop() {
+            if (!running) return; //don't cancel timer if it hasn't started
             endTime = Instant.now();
             timer.cancel();
             running = false;
+            canceled = true;
         }
 
         public void resume() {
             timer = new Timer();
             running = true;
+            canceled = false;
             schedule(task);
         }
 
         public void reset() {
             running = false;
+            canceled = false;
             startTime = Instant.now();
             endTime = Instant.now();
             timer = new Timer(); //i don't like this but java timer can't be resumed once canceled
         }
 
         private void schedule(Runnable func) {
-            timer.schedule(new TimerTask() {
+            timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
                     func.run();
                 }
+                
             }, delay, period);
+            /*
+             * 
+             timer.schedule(new TimerTask() {
+                 @Override
+                 public void run() {
+                     func.run();
+                 }
+             }, delay, period);
+             */
         }
 
         public Duration getDuration() {
