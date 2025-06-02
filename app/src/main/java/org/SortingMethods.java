@@ -1,5 +1,7 @@
 package org;
 
+import java.time.Duration;
+
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -15,8 +17,6 @@ public class SortingMethods extends JPanel {
         }
     };
 
-    protected long updateDuration = 1; //redraws canvas every 1 milli second
-
     /**
      * repaint canvas given a duration of milli seconds.
      * sorting method must be called in a separate thread to display sorting in real time.
@@ -24,7 +24,7 @@ public class SortingMethods extends JPanel {
     protected void refresh() {
         SwingUtilities.invokeLater(() -> repaint());
         try {
-            Thread.sleep(updateDuration);
+            Thread.sleep(Duration.ZERO);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

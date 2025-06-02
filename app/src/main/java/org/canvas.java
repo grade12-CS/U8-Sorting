@@ -72,15 +72,9 @@ public class Canvas extends JPanel {
             g.drawLine(0, base_line, getWidth(), base_line); 
 
             for (int i = 0; i < array.length; ++i) {
-                /* for each bar
-                * x pos: i * width + 2, add 2 for tiny padding
-                * y pos: panel height - bar height --> ensures bars to be drawn at the bottom
-                * bar width: width - 2 -> 2 is for gap between bars
-                * bar height: value * visual factor
-                */
                 int num = array[i];
                 Color color = num > 0 ? Color.ORANGE : Color.CYAN;
-                g.setColor(color); //change color for fun
+                g.setColor(color); 
                 int height = Math.abs(num) * visual_factor; //bar height reflects the value of each number in array 
                 int xpos = i * width;
                 int ypos = num > 0 ? base_line - height : base_line;
