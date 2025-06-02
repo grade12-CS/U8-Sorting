@@ -149,4 +149,58 @@ public class SortingMethods extends JPanel {
         //printArray(array);
     }
 
+    public static void trueBubbleSort(int[] array){
+        boolean swapped = true;
+        while(swapped == true){
+            swapped = false;
+            for(int i = 1; i < array.length; i++){
+                if(array[i-1]>array[i]){
+                    int tempNum = array[i-1];
+                    array[i-1] = array[i];
+                    array[i] = tempNum;
+                    swapped = true;
+                }
+            }
+        }
+    }
+
+    public static void trueSelectionSort(int[] array){
+        for(int i = 0; i < array.length - 1; i++){
+            int minIndex = i;
+            for(int j = i + 1; j < array.length; j++){
+                if(array[j] < array[minIndex]){
+                    minIndex = j;
+                }
+            }
+            int minValue = array[minIndex];
+            array[minIndex] = array[i];
+            array[i] = minValue;
+        }
+    }
+
+    public static void trueInsertionSort(int[] array){
+        for(int i = 0; i < array.length - 1; i++){
+            int j = i + 1;
+            while(j > 0 && array[j] < array[j-1]){
+                int num = array[j - 1];
+                array[j - 1] = array[j];
+                array[j] = num;
+                j--;
+            }
+        }
+    }
+
+    public static long getElapsedTime(int[] array, sorting_type type) {
+        int[] arrayCopy = array.clone();
+        long start = System.nanoTime();
+        switch (type) {
+            case boggo -> trueBubbleSort(arrayCopy);
+            case bubble -> trueBubbleSort(arrayCopy);
+            case insertion -> trueInsertionSort(arrayCopy);
+            case selection -> trueSelectionSort(arrayCopy);
+        }
+        long end = System.nanoTime();
+        return end - start;
+    }
+
 }
