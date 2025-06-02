@@ -25,48 +25,60 @@ public class TimeDisplay extends JPanel{
         add(timeLabel);
     }
     
-    public void startMeasuring(TimeUnit unit, Supplier<Boolean> when_to_stop) {      
+    public void startMeasuring(TimeUnit unit, Supplier<Boolean> when_to_stop) {  
+        if (MultiCanvas.refreshRequested) {
+            sw.reset();
+        }
+        if (MultiCanvas.resumeRequested) {
+            sw.resume();
+            return;
+        }
         sw.start(() -> {
-            if (when_to_stop.get() || MultiCanvas.stopRequested)  {
+            if (when_to_stop.get() || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
                 sw.stop();
                 if (MultiCanvas.refreshRequested) {
                     sw.reset();
-                }
+                }   
             }
-            long t = sw.getElapsedTime();
+            long t = sw.getElapsedTime(unit);
             timeLabel.setText(String.valueOf(t) + " " + unit.name());
-        }, 0, 1);
+        });
     }
 
-    public final class Stopwatch {
+    public class Stopwatch {
         private Instant startTime, endTime;
-        private boolean running = false, canceled = false;
+        private boolean running = false;
         private Timer timer = new Timer();
+        private Runnable task;
+        private final long delay = 0, period = 1; //runs task every 1 milli seconds, with 0 ms delay before start
 
-        public void start(Runnable func, long delay, long period) {
-            if (canceled) return;
+        public void start(Runnable task) {
+            this.task = task;
             running = true;
             startTime = Instant.now();
-            schedule(func, delay, period);
+            schedule(task);
         }
 
         public void stop() {
-            if (canceled) return;
             endTime = Instant.now();
             timer.cancel();
-            canceled = false;
             running = false;
         }
 
+        public void resume() {
+            timer = new Timer();
+            running = true;
+            schedule(task);
+        }
+
         public void reset() {
-            canceled = false;
             running = false;
             startTime = Instant.now();
             endTime = Instant.now();
             timer = new Timer(); //i don't like this but java timer can't be resumed once canceled
         }
 
-        private void schedule(Runnable func, long delay, long period) {
+        private void schedule(Runnable func) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
