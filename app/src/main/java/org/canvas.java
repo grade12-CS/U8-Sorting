@@ -3,7 +3,6 @@ package org;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.function.Consumer;
 
 import javax.swing.JPanel;
 
