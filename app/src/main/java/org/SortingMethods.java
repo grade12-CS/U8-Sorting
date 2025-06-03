@@ -50,14 +50,13 @@ public class SortingMethods extends JPanel {
     //TODO: use thread pool instead of creating new thread
 
     //infinite time complexity in the worst case lol
-    protected void boggoSort(int[] array, Consumer<Long> onFinish) {
+    protected void boggoSort(int[] array) {
         new Thread(() -> {
             long totalSortTime = 0;
             while (!isShuffled(array)) {
                 for (int i = 0; i < array.length; ++i) {
                     long start = System.nanoTime();
                     if(MultiCanvas.stopRequested) {
-                        if (onFinish != null) onFinish.accept(totalSortTime);
                         return;
                     }
                     int r_index = (int) (Math.random() * i);
@@ -68,11 +67,10 @@ public class SortingMethods extends JPanel {
                     refresh();
                 }
             }
-            if (onFinish != null) onFinish.accept(totalSortTime);
         }).start();
     }
 
-    protected void bubbleSort(int[] array, Consumer<Long> onFinish){
+    protected void bubbleSort(int[] array){
         new Thread(() -> {
             long totalSortTime = 0;
             boolean swapped = true;
@@ -81,7 +79,6 @@ public class SortingMethods extends JPanel {
                 for(int i = 1; i < array.length; i++){
                     long start = System.nanoTime();
                     if(MultiCanvas.stopRequested) {
-                        if (onFinish != null) onFinish.accept(totalSortTime);
                         return;
                     }
                     if(array[i-1]>array[i]){
@@ -94,18 +91,16 @@ public class SortingMethods extends JPanel {
                     }
                 }
             }
-            if (onFinish != null) onFinish.accept(totalSortTime);
         }).start();
         //printArray(array);
     }
 
-    protected void selectionSort(int[] array, Consumer<Long> onFinish){
+    protected void selectionSort(int[] array){
         new Thread(() -> {
             long totalSortTime = 0;
             for(int i = 0; i < array.length - 1; i++){
                 long start = System.nanoTime();
                 if(MultiCanvas.stopRequested) {
-                    if (onFinish != null) onFinish.accept(totalSortTime);
                     return;
                 }
                 int minIndex = i;
@@ -120,12 +115,11 @@ public class SortingMethods extends JPanel {
                 totalSortTime += System.nanoTime() - start;
                 refresh();
             }
-            if (onFinish != null) onFinish.accept(totalSortTime);
         }).start();
         //printArray(array);
     }
 
-    protected void insertionSort(int[] array, Consumer<Long> onFinish){
+    protected void insertionSort(int[] array){
         new Thread(() -> {
             long totalSortTime = 0;
             for(int i = 0; i < array.length - 1; i++){
@@ -133,7 +127,6 @@ public class SortingMethods extends JPanel {
                 while(j > 0 && array[j] < array[j - 1]){
                     long start = System.nanoTime();
                     if(MultiCanvas.stopRequested) {
-                        if (onFinish != null) onFinish.accept(totalSortTime);
                         return;
                     }
                     int num = array[j - 1];
@@ -144,7 +137,6 @@ public class SortingMethods extends JPanel {
                     refresh();
                 }
             }
-            if (onFinish != null) onFinish.accept(totalSortTime);
         }).start();
         //printArray(array);
     }

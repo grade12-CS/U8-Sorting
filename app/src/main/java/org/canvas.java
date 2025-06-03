@@ -41,28 +41,12 @@ public class Canvas extends JPanel {
             setBackground(Color.BLACK);
         }
 
-        /*public void getTime(){
-            //TODO: take into consideration the time spent during a stop?? if we have time
-            Consumer<Long> onFinish = (duration) -> {
-                SwingUtilities.invokeLater(() -> {
-                    timeDisplay.timeLabel.setTime("Sorting finished in " + duration/100000.000 + " ms");
-                });
-            };
-
-            if (null != type) switch (type) {
-                case boggo -> boggoSort(array, onFinish);
-                case bubble -> bubbleSort(array, onFinish);
-                case insertion -> insertionSort(array, onFinish);
-                case selection -> selectionSort(array, onFinish);
-            }
-        }*/
         public void getTime(){
-            Consumer<Long> onFinish = null;
             if (null != type) switch (type) {
-                case boggo -> boggoSort(array, onFinish);
-                case bubble -> bubbleSort(array, onFinish);
-                case insertion -> insertionSort(array, onFinish);
-                case selection -> selectionSort(array, onFinish);
+                case boggo -> boggoSort(array);
+                case bubble -> bubbleSort(array);
+                case insertion -> insertionSort(array);
+                case selection -> selectionSort(array);
             }
             timeDisplay.timeLabel.setTime(getElapsedTime(array, type)/1000000.0 + "ms");
         }
