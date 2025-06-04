@@ -3,6 +3,7 @@ package org;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
@@ -33,6 +34,10 @@ public class Canvas extends JPanel {
 
     public void setSorted(boolean bool) {
         canvas.sorted = bool;
+    }
+
+    public void setDelay(Duration delay) {
+        canvas.delay = delay;
     }
 
     public class SubCanvas extends SortingMethods {

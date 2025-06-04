@@ -27,17 +27,17 @@ public class TimeDisplay extends JPanel{
         timeLabel = new TimeLabel(algorithm_name);
 
         sw.task = () -> {
-            long t = sw.getElapsedTime(unit);
-            //TODO: display up to 3 decimal places
-            DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.CEILING);
-            timeLabel.setText(t + " " + unit.name());
             if (is_sorted.get() || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
                 sw.stop();
                 if (MultiCanvas.refreshRequested) {
                     sw.reset();
                 }   
             }
+            long t = sw.getElapsedTime(unit);
+            //TODO: display up to 3 decimal places
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.CEILING);
+            timeLabel.setText(t + " " + unit.name());
         };
 
         add(timeLabel);
@@ -60,7 +60,7 @@ public class TimeDisplay extends JPanel{
 
     public class Stopwatch {
         private Instant startTime, endTime;
-        private boolean started = false, canceled = false, resetted = false;
+        private boolean started = false, canceled = false, resetted = false, resumed = false;
         private Timer timer = new Timer();
         private Runnable task;
         private final long delay = 0, period = 1; //runs task every 1 milli seconds, with 0 ms delay before start
@@ -77,18 +77,15 @@ public class TimeDisplay extends JPanel{
             if (!started) return; //don't cancel timer if it hasn't started
             endTime = Instant.now();
             timer.cancel();
-            started = false;
             canceled = true;
         }
 
         public void resume() {
             if (task == null) return;
-            if (resetted || !started) {
+            if (resetted) {
                 startTime = Instant.now();
             }
             timer = new Timer();
-            started = true;
-            canceled = false;
             schedule(task);
         }
 

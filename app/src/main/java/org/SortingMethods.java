@@ -19,6 +19,8 @@ public class SortingMethods extends JPanel {
 
     protected boolean sorted = false;
 
+    protected Duration delay = Duration.ofNanos(1);
+
     /**
      * repaint canvas given a duration of milli seconds.
      * sorting method must be called in a separate thread to display sorting in real time.
@@ -26,7 +28,7 @@ public class SortingMethods extends JPanel {
     protected void refresh() {
         SwingUtilities.invokeLater(() -> repaint());
         try {
-            Thread.sleep(Duration.ZERO);
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

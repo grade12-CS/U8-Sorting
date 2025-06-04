@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Duration;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -17,7 +18,7 @@ import javax.swing.JRadioButton;
 import org.SortingMethods.sorting_type;
 
 public class MultiCanvas extends JPanel {
-    JRadioButton insertion, bubble, selection, boggo;
+    JRadioButton insertion, bubble, selection, boggo, rbtn_delay;
     JButton btn_sort, btn_refresh, btn_stop;
     final int min, max, array_size;
     int[] array;
@@ -103,7 +104,20 @@ public class MultiCanvas extends JPanel {
         btn_refresh = new JButton("Refresh");
         btn_stop = new JButton("Stop");
         btn_sort = new JButton("Sort");
+        rbtn_delay = new JRadioButton("Delay");
+        rbtn_delay.setSelected(true);
 
+        rbtn_delay.addActionListener((ActionEvent e) -> {
+            for (Canvas c : canvases) {
+                if (c.isVisible()) {
+                    if (rbtn_delay.isSelected()) {
+                        c.setDelay(Duration.ofNanos(1));
+                    } else {
+                        c.setDelay(Duration.ZERO);
+                    }
+                }
+            }
+        });
         btn_refresh.addActionListener((ActionEvent e) -> {
             refreshRequested = true;
             stopRequested = true;
@@ -137,6 +151,7 @@ public class MultiCanvas extends JPanel {
         p.add(btn_sort);
         p.add(btn_stop);
         p.add(btn_refresh);
+        p.add(rbtn_delay);
         return p;
     }
 
