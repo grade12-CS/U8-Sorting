@@ -30,7 +30,6 @@ public class MultiCanvas extends JPanel {
         max = 200;
         min = -200;
         array_size = (int) (getScreenSize().width * array_size_to_screen_ratio);
-        System.err.println(array_size);
         array = generateArray(array_size, max, min);
         setLayout(new BorderLayout());
         setPreferredSize(getScreenSize());

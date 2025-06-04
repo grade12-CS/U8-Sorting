@@ -17,17 +17,39 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class TimeDisplay extends JPanel{
-    public final TimeLabel timeLabel;
+    private final TimeLabel timeLabel;
     private final Stopwatch sw = new Stopwatch();
+    private boolean sorted = false;
 
-    public TimeDisplay(String algorithm_name) {
+    //TODO: fix 0 nanosecond
+    public TimeDisplay(String algorithm_name, TimeUnit unit, Supplier<Boolean> is_sorted) {
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
         setBackground(Color.BLACK);
         timeLabel = new TimeLabel(algorithm_name);
+
+        sw.task = () -> {
+            long t = sw.getElapsedTime(unit);
+            //TODO: display up to 3 decimal places
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.CEILING);
+            timeLabel.setText(t + " " + unit.name());
+            sorted = is_sorted.get();
+            if (sorted || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
+                sw.stop();
+                if (MultiCanvas.refreshRequested) {
+                    sw.reset();
+                }   
+            }
+        };
+
         add(timeLabel);
     }
-    
-    public void startMeasuring(TimeUnit unit, Supplier<Boolean> when_to_stop) {  
+
+    public void setLabel(String text) {
+        timeLabel.setText(text);
+    }
+
+    public void startMeasuring() {  
         if (MultiCanvas.refreshRequested) {
             sw.reset();
         }
@@ -35,53 +57,46 @@ public class TimeDisplay extends JPanel{
             sw.resume();
             return;
         }
-        sw.start(() -> {
-            if (when_to_stop.get() || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
-                sw.stop();
-                if (MultiCanvas.refreshRequested) {
-                    sw.reset();
-                }   
-            }
-            long t = sw.getElapsedTime(unit);
-            //TODO: display up to 3 decimal places
-            DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.CEILING);
-            timeLabel.setText(df.format(t) + " " + unit.name());
-        });
+        sw.start();
     }
 
     public class Stopwatch {
         private Instant startTime, endTime;
-        private boolean running = false, canceled = false;
+        private boolean started = false, canceled = false, resetted = false;
         private Timer timer = new Timer();
         private Runnable task;
         private final long delay = 0, period = 1; //runs task every 1 milli seconds, with 0 ms delay before start
 
-        public void start(Runnable task) {
-            if (canceled) return;
-            this.task = task;
-            running = true;
+        public void start() {
+            if (canceled || task == null) return;
+            started = true;
+            resetted = false;
             startTime = Instant.now();
             schedule(task);
         }
 
         public void stop() {
-            if (!running) return; //don't cancel timer if it hasn't started
+            if (!started) return; //don't cancel timer if it hasn't started
             endTime = Instant.now();
             timer.cancel();
-            running = false;
+            started = false;
             canceled = true;
         }
 
         public void resume() {
+            if (task == null) return;
+            if (resetted || !started) {
+                startTime = Instant.now();
+            }
             timer = new Timer();
-            running = true;
+            started = true;
             canceled = false;
             schedule(task);
         }
 
         public void reset() {
-            running = false;
+            resetted = true;
+            started = false;
             canceled = false;
             startTime = Instant.now();
             endTime = Instant.now();
@@ -96,19 +111,10 @@ public class TimeDisplay extends JPanel{
                 }
                 
             }, delay, period);
-            /*
-             * 
-             timer.schedule(new TimerTask() {
-                 @Override
-                 public void run() {
-                     func.run();
-                 }
-             }, delay, period);
-             */
         }
 
         public Duration getDuration() {
-            if (running) {
+            if (started) {
                 return Duration.between(startTime, Instant.now());
             } else {
                 return Duration.between(startTime, endTime);
