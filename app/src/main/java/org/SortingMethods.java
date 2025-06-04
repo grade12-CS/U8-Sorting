@@ -132,5 +132,4 @@ public class SortingMethods extends JPanel {
         }).start();
         //printArray(array);
     }
-
 }

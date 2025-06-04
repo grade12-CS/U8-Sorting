@@ -15,7 +15,7 @@ public class Canvas extends JPanel {
 
     public Canvas(int[] array, sorting_type type) {
         canvas = new SubCanvas(array, type);
-        timeDisplay = new TimeDisplay(type.name, TimeUnit.NANOSECONDS, () -> canvas.sorted);    
+        timeDisplay = new TimeDisplay(type.name, TimeUnit.MILLISECONDS, () -> canvas.sorted);    
         setLayout(new BorderLayout());
         add(canvas, BorderLayout.CENTER);
         add(timeDisplay, BorderLayout.EAST);
@@ -26,8 +26,13 @@ public class Canvas extends JPanel {
     }
 
     public void startSort() {
+        if (canvas.sorted) return;
         timeDisplay.startMeasuring();
         canvas.sort();
+    }
+
+    public void setSorted(boolean bool) {
+        canvas.sorted = bool;
     }
 
     public class SubCanvas extends SortingMethods {

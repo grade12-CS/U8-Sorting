@@ -108,8 +108,9 @@ public class MultiCanvas extends JPanel {
             refreshRequested = true;
             stopRequested = true;
             array = generateArray(array_size, max, min);
-            for (Canvas c : canvases) {
+            for (Canvas c : canvases) { 
                 c.setArray(array);
+                c.setSorted(false); //i don't like this
             }
         });
         btn_stop.addActionListener((ActionEvent e) -> {

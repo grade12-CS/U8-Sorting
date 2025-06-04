@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 public class TimeDisplay extends JPanel{
     private final TimeLabel timeLabel;
     private final Stopwatch sw = new Stopwatch();
-    private boolean sorted = false;
 
     //TODO: fix 0 nanosecond
     public TimeDisplay(String algorithm_name, TimeUnit unit, Supplier<Boolean> is_sorted) {
@@ -33,8 +32,7 @@ public class TimeDisplay extends JPanel{
             DecimalFormat df = new DecimalFormat("#.###");
             df.setRoundingMode(RoundingMode.CEILING);
             timeLabel.setText(t + " " + unit.name());
-            sorted = is_sorted.get();
-            if (sorted || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
+            if (is_sorted.get() || MultiCanvas.stopRequested || MultiCanvas.refreshRequested)  {
                 sw.stop();
                 if (MultiCanvas.refreshRequested) {
                     sw.reset();
