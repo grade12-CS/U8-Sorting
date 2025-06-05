@@ -2,8 +2,6 @@ package org;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Timer;
@@ -18,6 +16,10 @@ import javax.swing.JPanel;
 
 /**
  * a panel that measures time taken for an algoritm to sort an array and displays the time
+ * 
+ * actual time: time taken for an algorithm to sort an array without any delay
+ * delayed time: time taken for an algorithm to sort an array with delay. 
+ * The delay is to better visualize sorting by slowing the canvas down.
  */
 public class TimeDisplay extends JPanel{
     private final TimeLabel timeLabel;
@@ -42,21 +44,26 @@ public class TimeDisplay extends JPanel{
                 }   
             }
             long t = sw.getElapsedTime(unit);
-            //TODO: display up to 3 decimal places
-            DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.CEILING);
-            timeLabel.setText(t + " " + unit.name());
+            timeLabel.setDelayedTimeText(t + " " + unit.name());
         };
 
         add(timeLabel);
     }
 
     /**
-     * sets text of label displaying time
+     * sets text of label displaying delayed time
      * @param text
      */
-    public void setLabel(String text) {
-        timeLabel.setText(text);
+    public void setDelayedTimeText(String text) {
+        timeLabel.setDelayedTimeText(text);
+    }
+
+    /**
+     * sets text of label displaying acutal time
+     * @param text
+     */
+    public void setActualTimeText(String text) {
+        timeLabel.setActualTimeText(text);
     }
 
     /**
@@ -177,7 +184,7 @@ public class TimeDisplay extends JPanel{
      */
     public class TimeLabel extends JPanel {
         private final JLabel title; 
-        private final JLabel time;
+        private final JLabel delayedTime, actualTime;
 
         /**
          * set up design, layout, and define instances
@@ -188,21 +195,32 @@ public class TimeDisplay extends JPanel{
             setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             title = new JLabel(algorithm_name + ": ");
-            time = new JLabel("00:00:00");
+            delayedTime = new JLabel("0");
+            actualTime = new JLabel("0");
             title.setFont(new Font("Arial", Font.BOLD, 20));
             title.setBounds(10, 10, WIDTH, HEIGHT);
             title.setForeground(new Color(0, 150, 0));
-            time.setForeground(new Color(225, 150, 0));
+            delayedTime.setForeground(new Color(225, 150, 0));
+            actualTime.setForeground(new Color(225, 150, 0));
             add(title);
-            add(time);
+            add(delayedTime);
+            add(actualTime);
         }
 
         /**
-         * sets text for the label
+         * sets text for the delayed time label
          * @param text text to set
          */
-        public void setText(String text) {
-            time.setText(text);
+        public void setDelayedTimeText(String text) {
+            delayedTime.setText(text);
+        }
+
+        /**
+         * sets text for the actual time label
+         * @param text text to set
+         */
+        public void setActualTimeText(String text) {
+            actualTime.setText(text);
         }
     }
 }

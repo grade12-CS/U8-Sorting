@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.SortingMethods.sorting_type;
 
@@ -80,15 +81,27 @@ public class Canvas extends JPanel {
             this.array = array.clone();
             this.type = type;
             setBackground(Color.BLACK);
+            onFinish = (duration) -> {
+                SwingUtilities.invokeLater(() -> {
+                timeDisplay.setActualTimeText("Without Delay: " + duration/100000.000 + " ms");
+                });
+            };
         }
 
-        /**
-         * sets array to visualize
-         * @param newArray
-         */
+        public void getTime(){
+            //TODO: take into consideration the time spent during a stop?? if we have time
+            if (null != type) switch (type) {
+                case boggo -> boggoSort(array);
+                case bubble -> bubbleSort(array);
+                case insertion -> insertionSort(array);
+                case selection -> selectionSort(array);
+            }
+        }
+
         public void setArray(int[] newArray) {
             System.arraycopy(newArray, 0, this.array, 0, this.array.length);
-            timeDisplay.setLabel("Array updated");
+            timeDisplay.setActualTimeText("0");
+            timeDisplay.setDelayedTimeText("0");
             repaint();
         }
         
