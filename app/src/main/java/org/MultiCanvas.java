@@ -17,6 +17,9 @@ import javax.swing.JRadioButton;
 
 import org.SortingMethods.sorting_type;
 
+/**
+ * A main panel that handles every canvases for existing soring algorithm using the same array
+ */
 public class MultiCanvas extends JPanel {
     JRadioButton insertion, bubble, selection, boggo, rbtn_delay;
     JButton btn_sort, btn_refresh, btn_stop;
@@ -27,6 +30,9 @@ public class MultiCanvas extends JPanel {
 
     private final double array_size_to_screen_ratio = 0.2604167; //ratio obtained from my laptop screen
 
+    /**
+     * initializees array size, minimum and maximum array number value, and defines layout
+     */
     public MultiCanvas() {
         max = 200;
         min = -200;
@@ -38,6 +44,9 @@ public class MultiCanvas extends JPanel {
         add(groupCanvas(), BorderLayout.CENTER);
     }
     
+    /**
+     * creates a panel for displaying canvases of sorting algorithms selected by the user
+     */
     private JPanel groupCanvas() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -81,6 +90,13 @@ public class MultiCanvas extends JPanel {
         return p;
     }
     
+    /**
+     * generate an array randomly with defined size, max and min number value
+     * @param size size of array
+     * @param max maximum value of number to be generated
+     * @param min minimum value of number to be generated
+     * @return newly created array
+     */
     private int[] generateArray(int size, int max, int min) {
         int result[] = new int[size];
         Random r = new Random();
@@ -91,6 +107,10 @@ public class MultiCanvas extends JPanel {
         return result;
     }
     
+    /**
+     * creates a panel for containing algorithm selectio buttons, and action controller buttons
+     * @return
+     */
     private JPanel groupButton() {
         JPanel p = new JPanel();
         p.setSize(getScreenSize().width, (int) (getScreenSize().height * (1/8)));
@@ -155,6 +175,10 @@ public class MultiCanvas extends JPanel {
         return p;
     }
 
+    /**
+     * calculates the screen size of the user's device
+     * @return dimension of user's device screen
+     */
     private Dimension getScreenSize() {
         int width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         int height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();

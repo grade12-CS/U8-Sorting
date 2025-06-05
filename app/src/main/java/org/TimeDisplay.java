@@ -16,11 +16,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * a panel that measures time taken for an algoritm to sort an array and displays the time
+ */
 public class TimeDisplay extends JPanel{
     private final TimeLabel timeLabel;
     private final Stopwatch sw = new Stopwatch();
 
-    //TODO: fix 0 nanosecond
+    /**
+     * sets up display design, and define task to run periodically with stopwatch
+     * @param algorithm_name
+     * @param unit
+     * @param is_sorted
+     */
     public TimeDisplay(String algorithm_name, TimeUnit unit, Supplier<Boolean> is_sorted) {
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
         setBackground(Color.BLACK);
@@ -43,10 +51,17 @@ public class TimeDisplay extends JPanel{
         add(timeLabel);
     }
 
+    /**
+     * sets text of label displaying time
+     * @param text
+     */
     public void setLabel(String text) {
         timeLabel.setText(text);
     }
 
+    /**
+     * starts timer
+     */
     public void startMeasuring() {  
         if (MultiCanvas.refreshRequested) {
             sw.reset();
@@ -58,6 +73,9 @@ public class TimeDisplay extends JPanel{
         sw.start();
     }
 
+    /**
+     * a stopwatch that starts, stops, resumes, and resets on the user's request
+     */
     public class Stopwatch {
         private Instant startTime, endTime;
         private boolean started = false, canceled = false, resetted = false, resumed = false;
@@ -65,6 +83,9 @@ public class TimeDisplay extends JPanel{
         private Runnable task;
         private final long delay = 0, period = 1; //runs task every 1 milli seconds, with 0 ms delay before start
 
+        /**
+         * starts stopwatch, runs the defined task periodically, in milli seconds
+         */
         public void start() {
             if (canceled || task == null) return;
             started = true;
@@ -73,6 +94,9 @@ public class TimeDisplay extends JPanel{
             schedule(task);
         }
 
+        /**
+         * stops stopwatch, cancelling its timer
+         */
         public void stop() {
             if (!started) return; //don't cancel timer if it hasn't started
             endTime = Instant.now();
@@ -80,6 +104,9 @@ public class TimeDisplay extends JPanel{
             canceled = true;
         }
 
+        /**
+         * resumes stopwatch by creating a new instance of timer, the same task is run periodically again
+         */
         public void resume() {
             if (task == null) return;
             if (resetted) {
@@ -89,6 +116,9 @@ public class TimeDisplay extends JPanel{
             schedule(task);
         }
 
+        /**
+         * resets the boolean logics, and other instances of the stopwatch
+         */
         public void reset() {
             resetted = true;
             started = false;
@@ -98,6 +128,10 @@ public class TimeDisplay extends JPanel{
             timer = new Timer(); //i don't like this but java timer can't be resumed once canceled
         }
 
+        /**
+         * runs a given behaviour at fixed rate
+         * @param func function to run (it will be task in stopwatch)
+         */
         private void schedule(Runnable func) {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -108,6 +142,10 @@ public class TimeDisplay extends JPanel{
             }, delay, period);
         }
 
+        /**
+         * retreives elapsed time in duration
+         * @return
+         */
         public Duration getDuration() {
             if (started) {
                 return Duration.between(startTime, Instant.now());
@@ -116,19 +154,35 @@ public class TimeDisplay extends JPanel{
             }
         }
 
+        /**
+         * get elapsed time of duration in milli seconds
+         * @return
+         */
         public long getElapsedTime() {
             return getDuration().toMillis();
         }
 
+        /**
+         * get elapsed time by converting the mili seconds into the given time unit
+         * @param unit
+         * @return
+         */
         public long getElapsedTime(TimeUnit unit) {
             return unit.convert(getElapsedTime(), TimeUnit.MILLISECONDS);
         }
     }
 
+    /**
+     * a custom-designed label used for TimeDisplay
+     */
     public class TimeLabel extends JPanel {
         private final JLabel title; 
         private final JLabel time;
 
+        /**
+         * set up design, layout, and define instances
+         * @param algorithm_name name of algorithm to be displayed on the label
+         */
         public TimeLabel(String algorithm_name) {
             setBackground(Color.BLACK);
             setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -143,6 +197,10 @@ public class TimeDisplay extends JPanel{
             add(time);
         }
 
+        /**
+         * sets text for the label
+         * @param text text to set
+         */
         public void setText(String text) {
             time.setText(text);
         }
