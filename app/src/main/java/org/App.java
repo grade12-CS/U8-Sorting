@@ -1,9 +1,14 @@
 package org;
 
-
 import java.awt.Color;
 
 import javax.swing.JFrame;
+/**
+ * @author Jiamiao Zhen, Sarah Yoo
+ * @version 1.0
+ * completion date: 2025, 6, 4  
+ * description: an app visualizing and measuring timing for 4 sorting algorithms
+ */
 
 /**
  * main app class where program is launched
